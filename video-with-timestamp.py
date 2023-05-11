@@ -1,19 +1,20 @@
 import cv2
 import datetime
+import random
 import time
-
-# Esperar X segundos antes de empezar
-time.sleep(10)
 
 # Crea un objeto de captura de video
 cap = cv2.VideoCapture(0)  # Cambia "0" por el número de tu cámara si tienes varias
 
-# Define los momentos en los que quieres que aparezca el punto verde (en segundos)
-timestamps = [10, 15, 25, 35, 40]
-
-# Variables para controlar el tiempo
+# Variables para controlar el tiempo y el círculo verde
 start_time = datetime.datetime.now()
 current_time = start_time
+circle_time = random.uniform(1, 5)  # Genera un tiempo aleatorio entre 2 y 5 segundos
+circle_duration = 0.5  # Duración en segundos para mostrar el círculo verde
+
+# Establece el tamaño de la ventana del video
+cv2.namedWindow('Video', cv2.WINDOW_NORMAL)
+cv2.resizeWindow('Video', 800, 600)
 
 # Bucle para procesar el video
 while True:
@@ -29,11 +30,25 @@ while True:
     timestamp = str(current_time)
     cv2.putText(frame, timestamp, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
-    # Comprueba si se alcanza uno de los momentos deseados
-    if int(elapsed_seconds) in timestamps:
-        # Dibuja un punto verde en el cuadro
-        cv2.circle(frame, (250, 250), 100, (0, 255, 0), -1)
+    if elapsed_seconds >= circle_time:
+        # Calcula las coordenadas del centro de la pantalla
+        height, width, _ = frame.shape
+        center_x = width // 2
+        center_y = height // 2
 
+        # Calcula el radio del círculo
+        radius = min(center_x, center_y) // 5
+
+        # Dibuja un círculo verde en el centro de la pantalla
+        cv2.circle(frame, (center_x, center_y), radius, (0, 255, 0), -1)
+        show_circle = True
+
+    # Comprueba si ha pasado el tiempo para ocultar el círculo verde
+    if elapsed_seconds >= circle_time + circle_duration:
+        # Genera un nuevo tiempo aleatorio para el próximo círculo verde
+        circle_time = random.uniform(1, 5)
+        start_time = datetime.datetime.now()
+    
     # Muestra el cuadro resultante
     cv2.imshow('Video', frame)
 
