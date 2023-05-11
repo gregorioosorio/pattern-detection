@@ -2,9 +2,23 @@ import cv2
 import datetime
 import random
 import time
+import sys
+import getopt
+
+arg_help =  "{0} --circle <True|False>".format(sys.argv[0])
+arg_circle = True
+try:
+    opts, args = getopt.getopt(sys.argv[1:], "c:", ["circle="])
+except:
+    print(arg_help)
+    sys.exit(2)
+
+for opt, arg in opts:
+    if opt in ("-c", "--circle"):
+        arg_circle = (arg == "True")
 
 # Crea un objeto de captura de video
-cap = cv2.VideoCapture(0)  # Cambia "0" por el número de tu cámara si tienes varias
+cap = cv2.VideoCapture(4)  # Cambia "0" por el número de tu cámara si tienes varias
 
 # Variables para controlar el tiempo y el círculo verde
 start_time = datetime.datetime.now()
@@ -30,7 +44,7 @@ while True:
     timestamp = str(current_time)
     cv2.putText(frame, timestamp, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
 
-    if elapsed_seconds >= circle_time:
+    if arg_circle and elapsed_seconds >= circle_time:
         # Calcula las coordenadas del centro de la pantalla
         height, width, _ = frame.shape
         center_x = width // 2
@@ -44,7 +58,7 @@ while True:
         show_circle = True
 
     # Comprueba si ha pasado el tiempo para ocultar el círculo verde
-    if elapsed_seconds >= circle_time + circle_duration:
+    if arg_circle and elapsed_seconds >= circle_time + circle_duration:
         # Genera un nuevo tiempo aleatorio para el próximo círculo verde
         circle_time = random.uniform(1, 5)
         start_time = datetime.datetime.now()
