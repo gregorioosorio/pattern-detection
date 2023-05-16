@@ -18,7 +18,7 @@ for opt, arg in opts:
         arg_circle = (arg == "True")
 
 # Crea un objeto de captura de video
-cap = cv2.VideoCapture(4)  # Cambia "0" por el número de tu cámara si tienes varias
+cap = cv2.VideoCapture(0)  # Cambia "0" por el número de tu cámara si tienes varias
 
 # Variables para controlar el tiempo y el círculo verde
 start_time = datetime.datetime.now()
