@@ -32,7 +32,8 @@ columnas_valores = [col for col in df.columns if col.endswith('_V')]
 # Normalizar los valores de cada sensor
 for columna in columnas_valores:
     # 8400: Rango de los Emotiv Epoc+
-    df[columna] = (df[columna] - 8200) / 8200.0
+    # df[columna] = (df[columna] - 8400) / 8400.0
+    df[columna] = (df[columna] - df[columna].mean()) / df[columna].std()
     df[columna] = df[columna].apply(lambda x: "{:.10e}".format(x))
 
 df['Sampling Rate'] = 200
