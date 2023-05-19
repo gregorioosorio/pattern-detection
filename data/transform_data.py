@@ -32,11 +32,12 @@ columnas_valores = [col for col in df.columns if col.endswith('_V')]
 # Normalizar los valores de cada sensor
 for columna in columnas_valores:
     # 8400: Rango de los Emotiv Epoc+
-    df[columna] = (df[columna] - 8400) / 8400
+    df[columna] = (df[columna] - 8200) / 8200.0
     df[columna] = df[columna].apply(lambda x: "{:.10e}".format(x))
 
 df['Sampling Rate'] = 200
 
 df.to_csv(path_out, 
-columns=['Time (s)', 'F3_V', 'FC6_V', 'P7_V', 'T8_V', 'F7_V', 'F8_V', 'T7_V', 'P8_V', 'AF4_V', 'F4_V', 'AF3_V', 'O2_V', 'O1_V', 'FC5_V', 'Sampling Rate'], 
+#columns=['Time (s)', 'F3_V', 'FC6_V', 'P7_V', 'T8_V', 'F7_V', 'F8_V', 'T7_V', 'P8_V', 'AF4_V', 'F4_V', 'AF3_V', 'O2_V', 'O1_V', 'FC5_V', 'Sampling Rate'], 
+columns=['Time (s)', 'AF3_V', 'AF4_V', 'Sampling Rate'], 
 index=False,  sep=';')
